@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package chat;
+
+option go_package = "chat/gen;gen";
+
+message UserProfile {
+    int64 id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message GetProfileRequest {
+    int64 user_id = 1;
+}
+
+message GetProfileResponse {
+    UserProfile profile = 1;
+}
+
+message SendMessageRequest {
+    int64 chat_id = 1;
+    string text = 2;
+}
+
+message ChatMessage {
+    int64 id = 1;
+    int64 chat_id = 2;
+    int64 user_id = 3;
+    string text = 4;
+}
+
+message GetMessagesRequest {
+    int64 chat_id = 1;
+}
+
+service ProfileService {
+    rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+}
+
+service ChatService {
+    rpc SendMessage(SendMessageRequest)
+        returns (ChatMessage);
+
+    rpc GetMessages(GetMessagesRequest)
+        returns (stream ChatMessage);
+}
